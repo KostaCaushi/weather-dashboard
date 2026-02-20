@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div>
+        <h1>Weather Dashboard</h1>
+        <p class="sub">Search a city to view current conditions and a 5 day forecast.</p>
+      </div>
+    </header>
+
+    <form class="search" method="POST">
+      <input type="text" name="city" value="{{ city }}" placeholder="Enter city (example: Boston)" />
+      <button type="submit">Search</button>
+    </form>
+
+    {% if error %}
+      <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    {% if current %}
+      <section class="card current">
+        <div class="left">
+          <h2>{{ current.name }}{% if current.country %}, {{ current.country }}{% endif %}</h2>
+
+          <div class="big">
+            <span class="temp">{{ current.temp }}°C</span>
+            <span class="desc">{{ current.desc }}</span>
+          </div>
+
+          <div class="meta">
+            <div>Feels like: <b>{{ current.feels_like }}°C</b></div>
+            <div>Humidity: <b>{{ current.humidity }}%</b></div>
+            <div>Wind: <b>{{ current.wind }} m/s</b></div>
+          </div>
+        </div>
+
+        <div class="right">
+          <img alt="weather icon"
+               src="https://openweathermap.org/img/wn/{{ current.icon }}@2x.png" />
+        </div>
+      </section>
+    {% endif %}
+
+    {% if forecast and current %}
+      <h3 class="sectionTitle">Next 5 days</h3>
+      <section class="grid">
+        {% for day in forecast %}
+          <div class="card day">
+            <div class="dayTop">
+              <div class="dayLabel">{{ day.date_label }}</div>
+              <img alt="forecast icon"
+                   src="https://openweathermap.org/img/wn/{{ day.icon }}@2x.png" />
+            </div>
+            <div class="dayTemp">{{ day.temp }}°C</div>
+            <div class="dayDesc">{{ day.desc.title() }}</div>
+            <div class="dayMeta">Humidity: <b>{{ day.humidity }}%</b></div>
+          </div>
+        {% endfor %}
+      </section>
+    {% endif %}
+
+    <footer class="footer">
+      <span>Data from OpenWeather</span>
+    </footer>
+  </div>
+</body>
