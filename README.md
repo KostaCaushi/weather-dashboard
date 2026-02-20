@@ -1,9 +1,5 @@
 # Weather Dashboard
 
-## Preview
-
-![App Screenshot](screenshot.png)
-
 A Flask web application that displays real time weather conditions and a 5 day forecast using the OpenWeather API.
 
 ## Features
